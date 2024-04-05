@@ -9,7 +9,6 @@
 <body>
 <?php 
 include('Components/Navbarmain.php');
-<h1>sdsdsd</h1>
 include('Components/Carousel.php');
 ?>
 </body>
