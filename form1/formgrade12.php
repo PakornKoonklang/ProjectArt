@@ -15,7 +15,7 @@
     $total_membership_grade = 0;
     $total_membership_interest = 0;
     // ดึงข้อมูลรายวิชา
-    $sql_grade = "SELECT * FROM subjects";
+    $sql_grade = "SELECT * FROM subjects WHERE study_level_Id = 3";
     $result_grade = $connect->query($sql_grade);
     // ดึงข้อมูลความสนใจ
     $sql_interest = "SELECT * FROM attention";
@@ -37,6 +37,20 @@
         // เก็บข้อมูลที่รับมาจากฟอร์ม
         $grades = isset($_POST['grades']) ? $_POST['grades'] : [];
         $scores = isset($_POST['scores']) ? $_POST['scores'] : [];
+        // คำนวณค่าความเป็นสมาชิกจากเกรด
+        foreach ($grades as $subjectId => $grade) {
+            if (is_numeric($grade)) {
+                $membership_value = right_shoulder(floatval($grade), $a, $b);
+                $total_membership_grade += $membership_value;
+            }
+        }
+        // คำนวณค่าความเป็นสมาชิกจากคะเเนนความสนใจ
+        foreach ($scores as $attentionId => $score) {
+            if (is_numeric($score)) {
+                $membership_value = right_shoulder(floatval($score), $a, $b);
+                $total_membership_interest += $membership_value;
+            }
+        }
     }
     ?>
     <div class="container">
@@ -103,6 +117,8 @@
                     <h2>กรุณาเพิ่มข้อมูล</h2>
                 <?php else : ?>
                     <h2>ผลลัพธ์</h2>
+                    <h3>ค่าความเป็นสมาชิกจากเกรด: <?php echo  number_format($total_membership_grade, 2)  ?> </h3>
+                    <h3>ค่าความเป็นสมาชิกจากคะเเนนความสนใจ: <?php echo  number_format($total_membership_interest, 2)  ?> </h3>
                     <h3>ค่าความเป็นสมาชิกทั้งหมด: <?php echo  number_format($total_membership_grade + $total_membership_interest, 2)  ?> </h3>
                 <?php endif; ?>
             </div>
