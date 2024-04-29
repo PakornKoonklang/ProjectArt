@@ -25,7 +25,7 @@ if ($result->num_rows > 0) {
             // *เพิ่มข้อมูลอื่น ๆ ที่คุณต้องการ
         ];
         $_SESSION['admin_level_Id'] = 'SupperAdmin';
-        echo '<script>alert("Login successful! Welcome SupperAdmin."); window.location.href = "../Admin/admin_dashboard.php";</script>';
+        echo '<script>alert("Login successful! Welcome SupperAdmin."); window.location.href = "../Admin/Manage/admin_dashboard.php";</script>';
         exit();
     } elseif ($row['admin_level_Id'] == '11') {
         $_SESSION['user_data'] = [
@@ -35,12 +35,12 @@ if ($result->num_rows > 0) {
             // *เพิ่มข้อมูลอื่น ๆ ที่คุณต้องการ
         ];
         $_SESSION['admin_level_Id'] = 'Admin';
-        echo '<script>alert("Login successful! Welcome Admin."); window.location.href = "admin_dashboard.php";</script>';
+        echo '<script>alert("Login successful! Welcome Admin."); window.location.href = "../Admin/Manage/admin_dashboard.php";</script>';
         exit();
     }
 } else {
     // *เข้าสู่ระบบไม่สำเร็จ
-    echo '<script>alert("ล็อคอินผิดพลาด กรุณาตรวจสอบอีกครั้ง"); window.location.href = "admin_dashboard.php";</script>';
+    echo '<script>alert("ล็อคอินผิดพลาด กรุณาตรวจสอบอีกครั้ง"); window.location.href = "Login.php";</script>';
     exit();
 }
 
