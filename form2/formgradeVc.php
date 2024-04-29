@@ -14,7 +14,7 @@
     include('../Connent/connent.php');
         $total_membership = 0;
         // ดึงข้อมูลรายวิชา
-        $sql = "SELECT * FROM subjects";
+        $sql = "SELECT * FROM subjects WHERE study_level_Id ='2'";
         $result = $connect->query($sql);
         function right_shoulder($x, $a, $b)
         {
@@ -52,7 +52,7 @@
                                     <?php while ($row = $result->fetch_assoc()) : ?>
                                         <tr>
                                             <td>
-                                                <?php echo $row['subject_Name']; ?>
+                                                <?php echo $row['subject_name']; ?>
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control" name="grades[<?php echo $row['subject_Id']; ?>]" placeholder="กรอกเกรด">

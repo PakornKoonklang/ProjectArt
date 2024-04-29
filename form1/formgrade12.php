@@ -28,7 +28,7 @@
     $b = 4;
 
     // ดึงข้อมูลรายวิชา
-    $sql_subject = "SELECT * FROM subjects";
+    $sql_subject = "SELECT * FROM subjects WHERE  study_level_Id ='1'";
     $result_subject = $connect->query($sql_subject);
 
     // เก็บข้อมูลรายวิชา
@@ -75,7 +75,7 @@
                                 <?php foreach ($data as $row) : ?>
                                     <tr>
                                         <td><?php echo $row['subject_Id']; ?></td>
-                                        <td><?php echo $row['subject_Name']; ?></td>
+                                        <td><?php echo $row['subject_name']; ?></td>
                                         <td>
                                             <input type="text" class="form-control" name="grades[<?php echo $row['subject_Id']; ?>]" placeholder="กรอกเกรด">
                                         </td>
@@ -101,10 +101,10 @@
                                 <?php
                                 $count = 0;
                                 foreach ($membershipValues as $subjectId => $membershipValue) {
-                                    $subjectName = $data[$subjectId - 1]['subject_Name']; ?>
+                                    $subjectname = $data[$subjectId - 1]['subject_name']; ?>
                                     <tr>
                                         <td><?php echo $subjectId; ?></td>
-                                        <td><?php echo $subjectName; ?></td>
+                                        <td><?php echo $subjectname; ?></td>
                                         <td><?php echo number_format($membershipValue, 2); ?></td>
                                     </tr>
                                 <?php

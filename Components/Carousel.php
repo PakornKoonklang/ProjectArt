@@ -1,20 +1,17 @@
-<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselExampleFade" class="carousel slide carousel-fade">
   <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="10000">
-      <img src="img/2.jpg"  class="img-fluid" alt="...">
-    </div>
-    <div class="carousel-item" data-bs-interval="2000">
-      <img src="img/2.jpg"  class="img-fluid" alt="...">
+    <div class="carousel-item active">
+      <img src="Img/2.jpg" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="img/2.jpg"  class="img-fluid" alt="...">
+      <img src="Img/3.jpg" class="d-block w-100" alt="...">
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
   </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>

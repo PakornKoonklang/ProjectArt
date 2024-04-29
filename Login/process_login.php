@@ -17,19 +17,21 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
 
     // ตรวจสอบสถานะของผู้ใช้
-    if ($row['admin_level_Id'] == '101') {
+    if ($row['admin_level_Id'] == '10') {
         $_SESSION['user_data'] = [
             'admin_Firstname' => $row['admin_Firstname'],
             'admin_Lastname' => $row['admin_Lastname'],
+            'admin_level_Id' => $row['admin_level_Id'] = 'SupperAdmin',
             // *เพิ่มข้อมูลอื่น ๆ ที่คุณต้องการ
         ];
         $_SESSION['admin_level_Id'] = 'SupperAdmin';
         echo '<script>alert("Login successful! Welcome SupperAdmin."); window.location.href = "../Admin/admin_dashboard.php";</script>';
         exit();
-    } elseif ($row['admin_level_Id'] == '102') {
+    } elseif ($row['admin_level_Id'] == '11') {
         $_SESSION['user_data'] = [
             'admin_Firstname' => $row['admin_Firstname'],
             'admin_Lastname' => $row['admin_Lastname'],
+            'admin_level_Id' => $row['admin_level_Id'] = 'Admin',
             // *เพิ่มข้อมูลอื่น ๆ ที่คุณต้องการ
         ];
         $_SESSION['admin_level_Id'] = 'Admin';
@@ -44,3 +46,4 @@ if ($result->num_rows > 0) {
 
 $connect->close();
 ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
