@@ -66,14 +66,14 @@
         <li><a href="#about">จัดการสถานะ</a></li>
         <li><a href="#about">จัดการระดับชั้น</a></li>
         <li><a href="../Manage/manage_branches.php">จัดการสาขาที่อยู่ในคณะวิศวกรรมศาสตร์</a></li>
-        <li><a href="./manage_attention.php">จัดการรายชื่อความสนใจ</a></li>
+        <li><a href="../Manage/manage_attention.php">จัดการรายชื่อความสนใจ</a></li>
         <li><a href="#about">จัดการค่าความสนใจในเเต่ละวิชา</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle">กำหนดค่าความสำคัญของวิชาในเเต่ละสาขา</a>
             <ul class="dropdown-menu">
-                <li><a href="./manage_importance_subject6.php">ม.6</a></li>
-                <li><a href="./manage_importance_subject3.php">ปวช.</a></li>
-                <li><a href="./manage_importance_subject2.php">ปวส.</a></li>
+                <li><a href="../Manage/manage_importance_subject6.php">ม.6</a></li>
+                <li><a href="../Manage/manage_importance_subject3.php">ปวช.</a></li>
+                <li><a href="../Manage/manage_importance_subject2.php">ปวส.</a></li>
             </ul>
         </li>
     </ul>
