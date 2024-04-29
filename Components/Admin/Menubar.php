@@ -61,7 +61,7 @@
 <body>
     <h4>การจัดการข้อมูล</h4>
     <ul>
-        <li><a class="active" href="../admin_dashboard.php">Home</a></li>
+        <li><a class="active" href="../Manage/admin_dashboard.php">Home</a></li>
         <li><a href="../Manage/manage_member.php">จัดการรายชื่อAdmin</a></li>
         <li><a href="#about">จัดการสถานะ</a></li>
         <li><a href="#about">จัดการระดับชั้น</a></li>
