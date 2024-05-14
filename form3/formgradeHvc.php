@@ -37,13 +37,27 @@
         // เก็บข้อมูลที่รับมาจากฟอร์ม
         $grades = isset($_POST['grades']) ? $_POST['grades'] : [];
         $scores = isset($_POST['scores']) ? $_POST['scores'] : [];
+        // คำนวณค่าความเป็นสมาชิกจากเกรด
+        foreach ($grades as $subjectId => $grade) {
+            if (is_numeric($grade)) {
+                $membership_value = right_shoulder(floatval($grade), $a, $b);
+                $total_membership_grade += $membership_value;
+            }
+        }
+        // คำนวณค่าความเป็นสมาชิกจากคะเเนนความสนใจ
+        foreach ($scores as $attentionId => $score) {
+            if (is_numeric($score)) {
+                $membership_value = right_shoulder(floatval($score), $a, $b);
+                $total_membership_interest += $membership_value;
+            }
+        }
     }
     ?>
     <div class="container">
         <br>
         <div class="row">
             <div class="col">
-                <h3>รายวิชาพื้นฐานระดับประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</h3>
+                <h3>ระดับประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</h3>
                 <form method="post">
                     <table class="table">
                         <thead>
@@ -67,7 +81,7 @@
                     </table>
             </div>
             <div class="col">
-                <h3>ด้านความสนใจระดับระดับประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</h3>
+                <h3>ด้านความสนใจระดับประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</h3>
                 <table class="table">
                     <thead>
                         <tr>
