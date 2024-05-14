@@ -68,7 +68,7 @@
         <li><a href="#about">จัดการระดับชั้น</a></li>
         <li><a href="../Manage/manage_branches.php">จัดการสาขาที่อยู่ในคณะวิศวกรรมศาสตร์</a></li>
         <li><a href="../Manage/manage_attention.php">จัดการรายชื่อความสนใจ</a></li>
-        <li><a href="#about">จัดการค่าความสนใจในเเต่ละวิชา</a></li>
+        <li><a href="../Manage/manage_attention_importance.php">จัดการค่าความสนใจในเเต่ละวิชา</a></li>
         <li class="dropdown">
             <a href="#" class="dropdown-toggle">กำหนดค่าความสำคัญของวิชาในเเต่ละสาขา</a>
             <ul class="dropdown-menu">
