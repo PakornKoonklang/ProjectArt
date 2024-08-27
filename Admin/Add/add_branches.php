@@ -12,17 +12,18 @@
 <body>
     <div class="container mt-4">
         <h2 class="text-primary">เพิ่มสาขา</h2>
-        <form action="process_add_branches.php" method="POST">
+        <form action="../Add/process_add_branches.php" method="POST">
             <div class="mb-3">
-                <label for="branchName" class="form-label">ชื่อสาขา</label>
-                <input type="text" class="form-control" id="branchName" name="branchName" required>
+                <label for="branches_Name" class="form-label">ชื่อสาขา</label>
+                <input type="text" class="form-control" id="branches_Name" name="branches_Name" required>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">รายละเอียดสาขา</label>
-                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-            </div>
+                        <label for="description" class="form-label">รายละเอียดสาขา</label>
+                        <textarea class="form-control" id="description" name="description"required ></textarea>
+                    </div>
+
             <button type="submit" class="btn btn-primary">ยืนยัน</button>
-            <a href="admin_dashboard.php" class="btn btn-secondary btn-block">กลับ</a>
+            <a href="../Manage/manage_branches.php" class="btn btn-secondary btn-block">กลับ</a>
         </form>
     </div>
 </body>

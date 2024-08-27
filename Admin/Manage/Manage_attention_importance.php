@@ -1,23 +1,50 @@
 <?php
- include "../../Connent/connent.php"; // เพิ่มเฉพาะส่วนนี้เมื่อต้องการเรียกใช้งาน $connect
+include "../../Connent/connent.php"; // เชื่อมต่อกับฐานข้อมูล
+session_start(); // เริ่มต้น session เพื่อดึงข้อมูล
 
+// ตรวจสอบระดับของ Admin
+$admin_level_id = isset($_SESSION['admin_level_Id']) ? (int)$_SESSION['admin_level_Id'] : 0;
+
+// จำนวนผลลัพธ์ต่อหน้า
 $results_per_page = 10;
-$sql = "SELECT * FROM branches_attention";
-$result = $connect->query($sql);
-$number_of_results = $result->num_rows;
-$number_of_pages = ceil($number_of_results / $results_per_page);
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$this_page_first_result = ($page - 1) * $results_per_page;
 
-if (!isset($_GET['page'])) {
-    $page = 1;
+// ตรวจสอบสิทธิ์ของ Admin และดึงข้อมูลตามสิทธิ์
+if ($admin_level_id == 10) {
+    // SuperAdmin: ดึงข้อมูลทั้งหมด
+    $sql = "SELECT b.attention_Id AS id, br.branches_Id, br.branches_Name, a.attention_name, b.attention_Adder 
+            FROM branches_attention AS b 
+            INNER JOIN branches AS br ON b.branches_Id = br.branches_Id 
+            INNER JOIN attention AS a ON b.attention_Id = a.attention_Id";
+    $count_sql = "SELECT COUNT(*) AS total FROM branches_attention";
 } else {
-    $page = $_GET['page'];
+    // Admin: ดึงข้อมูลเฉพาะสาขาของ Admin
+    $sql = "SELECT b.attention_Id AS id, br.branches_Id, br.branches_Name, a.attention_name, b.attention_Adder 
+            FROM branches_attention AS b 
+            INNER JOIN branches AS br ON b.branches_Id = br.branches_Id 
+            INNER JOIN attention AS a ON b.attention_Id = a.attention_Id 
+            WHERE b.branches_Id = $admin_level_id";
+    $count_sql = "SELECT COUNT(*) AS total FROM branches_attention WHERE branches_Id = $admin_level_id";
 }
 
-$this_page_first_result = ($page - 1) * $results_per_page;
-$sql .= " LIMIT $results_per_page OFFSET $this_page_first_result";
-$result = $connect->query($sql);
-?>
+// เพิ่มเงื่อนไขการค้นหา
+if (isset($_POST['submit'])) {
+    $search_value = $connect->real_escape_string($_POST['search_value']);
+    $sql .= " AND br.branches_Name LIKE '%$search_value%'";
+}
 
+// เพิ่ม LIMIT และ OFFSET
+$sql .= " LIMIT $results_per_page OFFSET $this_page_first_result";
+
+$result = $connect->query($sql);
+
+// คำนวณจำนวนเรคอร์ดทั้งหมดและหน้าทั้งหมด
+$total_result = $connect->query($count_sql);
+$total_row = $total_result->fetch_assoc();
+$total_pages = ceil($total_row['total'] / $results_per_page);
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,78 +53,104 @@ $result = $connect->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบแนะนำในการเข้าศึกษาต่อในคณะวิศวกรรมศาสตร์และเทคโนโลยี</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/adminlte.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 
-<body class="container" ;>
-    <?php include "../../Components/Admin/Navbar.php"; ?>
-    <br>
-    <div class="row">
-        <div class="col-3"><?php include "../../Components/Admin/Menubar.php"; ?></div>
-        <div class="col-9">
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <?php include "../../Components/Admin/Navbar.php"; ?>
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <?php include "../../Components/Admin/Menubar.php"; ?>
+        </aside>
 
-            <body>
-                <div class="col-md-9" id="contentContainer">
-                    <h2 class="text-primary" id="welcomeMessage">จัดการค่าด้านความสนใจ</h2>
-                    <button type="button" class="btn btn-success mb-3"
-                        onclick="window.location.href='add_attention_importance.php';">เพิ่มค่าด้านความสนใจ</button>
-                    <table class="table table-striped table-bordered">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">รหัสความสนใจ</th>
-                                
-                                <th scope="col">ค่าความสำคัญ</th>
-                                <th scope="col">จัดการข้อมูล</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                    while ($row = $result->fetch_assoc()) {
-                ?>
-                            <tr>
-                                <td><?php echo $row['attention_Id']; ?></td>
-                                
-                                <td><?php echo $row['attention_Adder'];?></td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href='edit_attention_importance?attention_Id=<?php echo $row['attention_Id']; ?>'
-                                            class='btn btn-warning mx-1'>Edit</a>
-                                        <a href='process_delete_attention_importance.php?attention_Id=<?php echo $row['attention_Id']; ?>'
-                                            class='btn btn-danger'
-                                            onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php
-                    }
-                ?>
-                        </tbody>
-                    </table>
-
-                    <!-- แสดงปุ่มเลื่อนหน้า -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <?php
-        for ($i = 1; $i <= $number_of_pages; $i++) {
-            echo "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='loadPage($i)'>$i</a></li>";
-        }
-        ?>
-                        </ul>
-                    </nav>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <h1 class="m-0 text-dark">จัดการค่าด้านความสนใจในสาขา</h1>
                 </div>
-            </body>
+            </div>
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between">
+                                <form method="post" class="form-inline">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="ค้นหาสาขา" name="search_value">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <?php if ($admin_level_id == 10) { ?>
+                                    <a href='../Add/add_attention_importance.php' class='btn btn-success'><i class="fas fa-plus"></i> เพิ่ม</a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>รหัส</th>
+                                        <th>ชื่อสาขา</th>
+                                        <th>ชื่อความสนใจ</th>
+                                        <th>ค่าความสำคัญ</th>
+                                        <th>จัดการข้อมูล</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($row = $result->fetch_assoc()) { ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['branches_Name']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['attention_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['attention_Adder']); ?></td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <?php if ($admin_level_id == 10 || $row['branches_Id'] == $admin_level_id) { ?>
+                                                        <a href='../Edit/edit_attention_importance.php?id=<?php echo $row['id']; ?>' class='btn btn-warning'><i class="fas fa-edit"></i></a>
+                                                        <a href='../Delete/process_delete_attention_importance.php?id=<?php echo $row['id']; ?>' class='btn btn-danger' onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')"><i class="fas fa-trash"></i></a>
+                                                    <?php } ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                                        <li class='page-item <?php echo ($i == $page) ? 'active' : ''; ?>'>
+                                            <a class='page-link' href='?page=<?php echo $i; ?>'><?php echo $i; ?></a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark"></aside>
     </div>
+
+    <!-- AdminLTE JS -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/js/adminlte.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>
 </body>
-<script src="https://kit.fontawesome.com/c233baf144.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-</script>
-<script>
-function loadPage(page) {
-    window.location.href = "manage_attention.php?page=" + page;
-}
-</script>
 
 </html>

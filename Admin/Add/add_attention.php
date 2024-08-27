@@ -14,12 +14,12 @@
         <h2 class="text-primary">เพิ่มความสนใจ</h2>
         <form action="process_add_attention.php" method="POST">
             <div class="mb-3">
-                <label for="attentionName" class="form-label">ชื่อความสนใจ</label>
-                <input type="text" class="form-control" id="attentionName" name="attentionName" required>
+                <label for="attention_name" class="form-label">ชื่อความสนใจ</label>
+                <input type="text" class="form-control" id="attention_name" name="attention_name" required>
             </div>
            
             <button type="submit" class="btn btn-primary">ยืนยัน</button>
-            <a href="admin_dashboard.php" class="btn btn-secondary btn-block">กลับ</a>
+            <a href="../Edit/admin_dashboard.php" class="btn btn-secondary btn-block">กลับ</a>
         </form>
     </div>
 </body>

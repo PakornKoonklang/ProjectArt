@@ -1,23 +1,29 @@
 <?php
-include "../Connent/connent.php";
+include "../../Connent/connent.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate and sanitize input data
-    $branchName = mysqli_real_escape_string($connect, $_POST['branchName']);
-    $description = mysqli_real_escape_string($connect, $_POST['description']);
+    // ตรวจสอบและกำหนดค่าตัวแปร
+    $branches_Name = isset($_POST['branches_Name']) ? $_POST['branches_Name'] : '';
+    $description = isset($_POST['description']) ? $_POST['description'] : '';
 
-    // Insert data into the database
-    $sql = "INSERT INTO branches (branch_Name, description) VALUES ('$branchName', '$description')";
-    
-    if ($connect->query($sql) === TRUE) {
-        // Redirect to the page after successful addition
-        header("Location: admin_dashboard.php");
-        exit();
+    // เช็คค่าที่ส่งมาจากฟอร์ม
+    if ($branches_Name != '' && $description != '') {
+        // ตั้งค่าคำสั่ง SQL สำหรับ INSERT
+        $sql = "INSERT INTO branches (branches_Name, description) VALUES ('$branches_Name', '$description')";
+
+        // ทำการ query และตรวจสอบผลลัพธ์
+        if ($connect->query($sql) === TRUE) {
+            // Redirect หลังจาก INSERT สำเร็จ
+            header("Location: ../Manage/manage_branches.php");
+            exit();
+        } else {
+            echo "Error: " . $sql . "<br>" . $connect->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $connect->error;
+        echo "กรุณากรอกข้อมูลให้ครบทุกช่อง";
     }
 }
 
-// Close the database connection
+// ปิดการเชื่อมต่อฐานข้อมูล
 $connect->close();
 ?>

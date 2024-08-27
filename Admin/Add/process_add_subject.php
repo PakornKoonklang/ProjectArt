@@ -1,13 +1,13 @@
 <?php
-include "../Connent/connent.php";
+include "../../Connent/connent.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate and sanitize input data
-    $subjectName = mysqli_real_escape_string($connect, $_POST['subjectName']);
+    $subjectName = mysqli_real_escape_string($connect, $_POST['subject_name']);
  
 
     // Insert data into the database
-    $sql = "INSERT INTO subjects (subject_Name) VALUES ('$subjectName')";
+    $sql = "INSERT INTO subjects (subject_name) VALUES ('$subjectName')";
     
     if ($connect->query($sql) === TRUE) {
         // Redirect to the page after successful addition

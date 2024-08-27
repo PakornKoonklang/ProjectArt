@@ -47,13 +47,15 @@ $result = $connect->query($sql);
                         </form>
                     </div>
                     <div class="col-sm-4"><button type="button" class="btn btn-success mb-3"
-                            onclick="window.location.href='add_branches.php';"><i class="fa-solid fa-plus"></i></button>
+                            onclick="window.location.href='../Add/add_subject.php';"><i class="fa-solid fa-plus"></i></button>
                     </div>
                 </div>
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
+                            <th scope="col">รหัสสาขา</th>
                             <th scope="col">ชื่อสาขา</th>
+                            <th scope="col">รหัสรายวิชา</th>
                             <th scope="col">ชื่อรายวิชา</th>
                             <th scope="col">ระดับชั้น</th>
                             <th scope="col">ความสำคัญ</th>
@@ -63,15 +65,17 @@ $result = $connect->query($sql);
                     <tbody>
                         <?php while ($row = $result->fetch_assoc()) { ?>
                         <tr>
+                            <td><?php echo $row['id'] ?></td>
                             <td><?php echo $row['branches_Name'] ?></td>
+                            <td><?php echo $row['subject_Id'] ?></td>
                             <td><?php echo $row['subject_name'] ?></td>
                             <td><?php echo $row['study_level_name'] ?></td>
                             <td><?php echo $row['subject_Multiplier'] ?></td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href='edit_branches.php?id=<?php echo $row['id']; ?>'
+                                    <a href='../Edit/edit_subject.php?id=<?php echo $row['id']; ?>'
                                         class='btn btn-warning mx-1'><i class="fa-solid fa-file-pen"></i></a>
-                                    <a href='process_delete_branches.php?id=<?php echo $row['id']; ?>'
+                                    <a href='process_delete_subject.php?id=<?php echo $row['id']; ?>'
                                         class='btn btn-danger' onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่?')"><i
                                             class="fa-solid fa-trash"></i></a>
                                 </div>

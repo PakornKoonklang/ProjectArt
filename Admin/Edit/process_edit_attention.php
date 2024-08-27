@@ -1,13 +1,13 @@
 <?php
-include "../Connent/connent.php";
+include "../../Connent/connent.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate and sanitize input data
-    $attentionId = isset($_POST['attentionId']) ? mysqli_real_escape_string($connect, $_POST['attentionId']) : '';
-    $attentionName = isset($_POST['attentionName']) ? mysqli_real_escape_string($connect, $_POST['attentionName']) : '';
+    $attentionId = isset($_POST['attentionId']) ? $_POST['attentionId'] : '';
+    $attentionName = isset($_POST['attention_name']) ? $_POST['attention_name'] : '';
 
     // Update data in the database using Prepared Statements
-    $stmt = $connect->prepare("UPDATE attention SET attention_Name=? WHERE attention_Id=?");
+    $stmt = $connect->prepare("UPDATE attention SET attention_name=? WHERE attention_Id=?");
 
     // Check if the prepare statement succeeded
     if ($stmt) {
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // Redirect to the page after successful update
-            header("Location: admin_dashboard.php");
+            header("Location: ../Manage/manage_attention.php");
             exit();
         } else {
             echo "Error executing statement: " . $stmt->error;

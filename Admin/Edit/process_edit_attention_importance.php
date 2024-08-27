@@ -1,31 +1,45 @@
 <?php
-include "../Connent/connent.php";
+include "../../Connent/connent.php";
 
+// ตรวจสอบว่ามีการส่งข้อมูลมาหรือไม่
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate and sanitize input data
-    $attentionId = isset($_POST['attentionId']) ? mysqli_real_escape_string($connect, $_POST['attentionId']) : '';
-    $attentionAdder = isset($_POST['attentionAdder']) ? mysqli_real_escape_string($connect, $_POST['attentionAdder']) : '';
+    // ตรวจสอบการส่งข้อมูลที่จำเป็น
+    if (isset($_POST['id']) && isset($_POST['attention_Adder'])) {
+        $id = $_POST['id'];
+        $attentionAdder = $_POST['attention_Adder'];
 
-    // Update data in the database using Prepared Statements
-    $stmt = $connect->prepare("UPDATE branches_attention SET attention_Adder=? WHERE attention_Id=?");
+        // ตรวจสอบว่า id และ attention_Adder เป็นตัวเลขหรือไม่
+        if (is_numeric($id) && is_numeric($attentionAdder)) {
+            // เตรียมคำสั่ง SQL สำหรับการอัพเดต
+            $stmt = $connect->prepare("UPDATE branches_attention SET attention_Adder = ? WHERE attention_Id = ?");
+            
+            // ตรวจสอบว่า prepare คำสั่ง SQL สำเร็จหรือไม่
+            if ($stmt) {
+                $stmt->bind_param("ii", $attentionAdder, $id);
+                
+                // ดำเนินการอัพเดตและตรวจสอบผลลัพธ์
+                if ($stmt->execute()) {
+                    // เปลี่ยนเส้นทางไปยังหน้า Manage_attention_importance.php
+                    header("Location: ../Manage/Manage_attention_importance.php");
+                    exit();
+                } else {
+                    echo "Error executing statement: " . $stmt->error;
+                }
 
-    // Check if the prepare statement succeeded
-    if ($stmt) {
-        // Bind parameters and execute the statement
-        $stmt->bind_param("si", $attentionAdder, $attentionId); // Use "si" for string, integer
-
-        if ($stmt->execute()) {
-            // Redirect to the page after successful update
-            header("Location: admin_dashboard.php");
-            exit();
+                $stmt->close();
+            } else {
+                echo "Error preparing statement: " . $connect->error;
+            }
         } else {
-            echo "Error executing statement: " . $stmt->error;
+            echo "Invalid input. ID and Attention Adder must be numeric.";
         }
     } else {
-        echo "Error preparing statement: " . $connect->error;
+        echo "Required data not provided.";
     }
+} else {
+    echo "Invalid request method.";
 }
 
-// Close the database connection
+// ปิดการเชื่อมต่อฐานข้อมูล
 $connect->close();
 ?>

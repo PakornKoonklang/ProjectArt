@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <?php include "../Connent/connent.php"; ?>
+    <?php include "../../Connent/connent.php"; ?>
 
     <?php
     // ตรวจสอบว่ามีการส่ง branch_id มาหรือไม่
@@ -42,12 +42,10 @@
                 <form action="process_edit_attention.php" method="post">
                     <!-- Hidden input เพื่อส่ง branch_id ไปยังหน้า update_branch.php -->
                     <input type="hidden" name="attentionId" value="<?php echo $row['attention_Id']; ?>">
-
                     <div class="mb-3">
-                        <label for="attentionName" class="form-label">ชื่อความสนใจ</label>
-                        <input type="text" class="form-control" id="attentionName" name="attentionName" value="<?php echo $row['attention_Name']; ?>" required>
+                        <label for="attention_name" class="form-label">ชื่อความสนใจ</label>
+                        <input type="text" class="form-control" id="attention_name" name="attention_name" value="<?php echo isset($row['attention_name']) ? htmlspecialchars($row['attention_name']) : ''; ?>" required>
                     </div>
-
 
                     <button type="submit" class="btn btn-primary">อัพเดต</button>
                     <a href="admin_dashboard.php" class="btn btn-secondary btn-block">กลับ</a>

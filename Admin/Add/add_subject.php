@@ -14,12 +14,12 @@
         <h2 class="text-primary">เพิ่มรายวิชา</h2>
         <form action="process_add_subject.php" method="POST">
             <div class="mb-3">
-                <label for="subjectName" class="form-label">ชื่อรายวิชา</label>
-                <input type="text" class="form-control" id="subjectName" name="subjectName" required>
+                <label for="subject_name" class="form-label">ชื่อรายวิชา</label>
+                <input type="text" class="form-control" id="subjectn_name" name="subject_name" required>
             </div>
            
             <button type="submit" class="btn btn-primary">ยืนยัน</button>
-            <a href="admin_dashboard.php" class="btn btn-secondary btn-block">กลับ</a>
+            <a href="../Edit/admin_dashboard.php" class="btn btn-secondary btn-block">กลับ</a>
         </form>
     </div>
 </body>
